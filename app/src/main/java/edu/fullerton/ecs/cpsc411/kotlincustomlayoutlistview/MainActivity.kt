@@ -29,26 +29,25 @@ val people = arrayOf(
     Person("Beatrice J. Hernadez", "BeatriceJHernadez@dayrep.com")
 )
 
-class PersonAdapter(context: Context) : ArrayAdapter<Person>(context, R.layout.item, R.id.nameTextView, people) {
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val item = super.getView(position, convertView, parent)
-
-        item.nameTextView.text = people[position].name
-        item.emailTextView.text = people[position].email
-
-        return item
-    }
-}
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val adapter = PersonAdapter(this)
+        listView.adapter = object : ArrayAdapter<Person>(this, R.layout.item, R.id.nameTextView, people) {
 
-        listView.adapter = adapter
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                val item = super.getView(position, convertView, parent)
+
+                item.nameTextView.text = people[position].name
+                item.emailTextView.text = people[position].email
+
+                return item
+            }
+
+        }
+
         listView.setOnItemClickListener { _, _, position, _ ->
             textView.text = "\"${people[position].name}\" <${people[position].email}>"
         }
